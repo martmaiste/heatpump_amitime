@@ -12,8 +12,12 @@ from homeassistant.const import (
     UnitOfPressure,
     UnitOfTemperature,
     UnitOfTime,
-    UnitOfVoltage,
 )
+
+try:
+    from homeassistant.const import UnitOfElectricPotential
+except ImportError:  # HA < 2026 called the voltage unit UnitOfVoltage
+    from homeassistant.const import UnitOfVoltage as UnitOfElectricPotential
 
 DOMAIN = "heatpump_amitime"
 
@@ -167,7 +171,7 @@ READ_SENSORS: list[SensorDef] = [
     SensorDef("outdoor_coil_temp", "Outdoor Coil Temperature", UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT),
     SensorDef("gas_discharge_temp", "Gas Discharge Temperature", UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT),
     SensorDef("gas_suction_temp", "Gas Suction Temperature", UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT),
-    SensorDef("voltage", "Voltage", UnitOfVoltage.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT),
+    SensorDef("voltage", "Voltage", UnitOfElectricPotential.VOLT, SensorDeviceClass.VOLTAGE, SensorStateClass.MEASUREMENT),
     SensorDef("current", "Current", UnitOfElectricCurrent.AMPERE, SensorDeviceClass.CURRENT, SensorStateClass.MEASUREMENT),
     SensorDef("compressor_freq", "Compressor Frequency", UnitOfFrequency.HERTZ, None, SensorStateClass.MEASUREMENT),
     SensorDef("compressor_freq_limit", "Compressor Frequency Limit", UnitOfFrequency.HERTZ, None, SensorStateClass.MEASUREMENT),
@@ -195,9 +199,9 @@ SETPOINT_SENSORS: list[SensorDef] = [
 
 # Read-only binary sensors (always present).
 BINARY_SENSORS: list[BinaryDef] = [
-    BinaryDef("dhw_state", "DHW Working State", BinarySensorDeviceClass.HEAT),
-    BinaryDef("heating_state", "Heating Working State", BinarySensorDeviceClass.HEAT),
-    BinaryDef("cooling_state", "Cooling Working State", BinarySensorDeviceClass.COOL),
+    BinaryDef("dhw_state", "DHW Working State", BinarySensorDeviceClass.RUNNING),
+    BinaryDef("heating_state", "Heating Working State", BinarySensorDeviceClass.RUNNING),
+    BinaryDef("cooling_state", "Cooling Working State", BinarySensorDeviceClass.RUNNING),
     BinaryDef("defrost_state", "Defrost State", BinarySensorDeviceClass.RUNNING),
     BinaryDef("heating_curve_enabled", "Heating Curve Enabled", None),
 ]
