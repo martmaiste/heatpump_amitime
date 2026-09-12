@@ -1,0 +1,15 @@
+{
+  "domain": "heatpump_amitime",
+  "name": "AmiTime Heat Pump",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/martmaiste/heatpump_amitime",
+  "integration_type": "hub",
+  "issue_tracker": "https://github.com/martmaiste/heatpump_amitime/issues",
+  "license": "MIT",
+  "loggers": [
+    "custom_components.heatpump_amitime"
+  ],
+  "requirements": [],
+  "version": "1.0.0"
+}

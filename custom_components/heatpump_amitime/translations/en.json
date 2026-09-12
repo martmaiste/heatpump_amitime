@@ -1,0 +1,42 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "AmiTime Heat Pump",
+        "description": "Enter the address of your heat pump Wi-Fi adapter (usr-c210). Cloud fields are optional and only needed for controls.",
+        "data": {
+          "host": "Adapter IP address",
+          "port": "Port",
+          "device_name": "Device name",
+          "manufacturer": "Manufacturer",
+          "model": "Model",
+          "mn": "Cloud mn (optional)",
+          "devid": "Cloud devid (optional)",
+          "cookie": "Cloud session cookie (optional)",
+          "cloud_url": "Cloud API URL (optional)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the heat pump adapter. Check the IP/port and that the adapter is configured as a TCP server."
+    },
+    "abort": {
+      "already_configured": "This heat pump adapter is already configured.",
+      "single_instance_allowed": "Only a single configuration is allowed."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "AmiTime Heat Pump options",
+        "description": "Manage the cloud control credentials. Leave mn/devid/cookie empty to disable controls (read-only).",
+        "data": {
+          "mn": "Cloud mn",
+          "devid": "Cloud devid",
+          "cookie": "Cloud session cookie",
+          "cloud_url": "Cloud API URL"
+        }
+      }
+    }
+  }
+}
