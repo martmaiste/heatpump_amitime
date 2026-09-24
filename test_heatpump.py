@@ -44,7 +44,7 @@ import sys
 import time
 import types
 
-MODE_NAMES = {1: "DHW", 2: "Heating", 3: "Cooling", 5: "Heating + DHW"}
+MODE_NAMES = {1: "DHW", 2: "Heating", 3: "Cooling", 5: "Heating + DHW", 6: "Cooling + DHW"}
 
 # ---------------------------------------------------------------------------
 # Field display specs: (store key, short label)

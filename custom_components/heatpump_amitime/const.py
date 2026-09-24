@@ -26,7 +26,7 @@ DEFAULT_PORT = 8899
 DEFAULT_CLOUD_URL = "https://www.myheatpump.com/a/amt/setdata/update"
 MANUFACTURER_DEFAULT = "AmiTime"
 MODEL_DEFAULT = "usr-c210"
-SW_VERSION = "1.0.0"
+SW_VERSION = "1.0.1"
 
 CONF_DEVICE_NAME = "device_name"
 CONF_MANUFACTURER = "manufacturer"
@@ -194,7 +194,7 @@ SETPOINT_SENSORS: list[SensorDef] = [
     SensorDef("dhw_set_temp", "DHW Set Temperature", UnitOfTemperature.CELSIUS, SensorDeviceClass.TEMPERATURE, SensorStateClass.MEASUREMENT),
     SensorDef("heating_delta_t", "Heating Delta T", UnitOfTemperature.KELVIN, None, SensorStateClass.MEASUREMENT),
     SensorDef("cooling_delta_t", "Cooling Delta T", UnitOfTemperature.KELVIN, None, SensorStateClass.MEASUREMENT),
-    SensorDef("working_mode", "Working Mode", None, None, None, value_map={1: "DHW", 2: "Heating", 3: "Cooling", 5: "Heating + DHW"}),
+    SensorDef("working_mode", "Working Mode", None, None, None, value_map={1: "DHW", 2: "Heating", 3: "Cooling", 5: "Heating + DHW", 6: "Cooling + DHW"}),
 ]
 
 # Read-only binary sensors (always present).
@@ -260,7 +260,7 @@ SELECTS: list[SelectDef] = [
         "par2",
         "Mode",
         options=("Cooling", "DHW", "Heating"),
-        read_map={1: "DHW", 2: "Heating", 3: "Cooling", 5: "Heating + DHW"},
+        read_map={1: "DHW", 2: "Heating", 3: "Cooling", 5: "Heating + DHW", 6: "Cooling + DHW"},
         write_map={"Cooling": "0", "DHW": "1", "Heating": "2"},
     ),
 ]

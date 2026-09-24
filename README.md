@@ -177,9 +177,10 @@ adapter --TCP--> Home Assistant (custom_components/heatpump_amitime)
   the connection status, packet count and all decoded field values (the
   cookie is redacted) — useful for confirming the socket is receiving data.
 - **Working modes** (`Working Mode` sensor / `Mode` select): `1` = DHW,
-  `2` = Heating, `3` = Cooling, `5` = Heating + DHW (combined, set from the
-  physical panel). Mode `5` is *shown* but is not a selectable option in HA —
-  the select offers only Cooling / DHW / Heating (written as `par2` 0/1/2).
+  `2` = Heating, `3` = Cooling, `5` = Heating + DHW, `6` = Cooling + DHW
+  (combined modes are set from the physical panel). Modes `5`/`6` are *shown*
+  but not selectable in HA — the select offers only Cooling / DHW / Heating
+  (written as `par2` 0/1/2).
 
 ## Repository layout
 
