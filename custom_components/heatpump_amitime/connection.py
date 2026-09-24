@@ -15,13 +15,19 @@ _LOGGER = logging.getLogger(__name__)
 # state writes if the adapter emits packets very frequently.
 _MIN_NOTIFY_INTERVAL = 0.5
 
+# The adapter only sends the setpoint (01B3) snapshot when a client connects,
+# so values changed on the unit's panel would stay stale otherwise.
+# Reconnect at least this often to re-fetch the snapshot.
+_SETPOINT_REFRESH_INTERVAL = 300.0
+
 
 class HeatpumpConnection:
     """Maintains the persistent TCP connection and decodes incoming packets.
 
     The adapter is a push-based server: once connected it streams packets
     continuously, so there is nothing to poll. This task reconnects with
-    exponential backoff if the connection drops.
+    exponential backoff if the connection drops, and periodically, to
+    re-fetch the setpoint snapshot (the adapter only sends it on connect).
     """
 
     def __init__(
@@ -40,6 +46,7 @@ class HeatpumpConnection:
         self._reader: asyncio.StreamReader | None = None
         self._writer: asyncio.StreamWriter | None = None
         self._last_notify = 0.0
+        self._last_setpoint = 0.0
 
     async def start(self) -> None:
         """Start the background connection task (no-op if already running)."""
@@ -86,6 +93,7 @@ class HeatpumpConnection:
                     asyncio.open_connection(self._host, self._port), timeout=15
                 )
                 self._store.connected = True
+                self._last_setpoint = time.monotonic()
                 backoff = 2
                 _LOGGER.info(
                     "Connected to heat pump adapter %s:%s", self._host, self._port
@@ -104,12 +112,23 @@ class HeatpumpConnection:
                         self._store.last_packet_cmd = CMD_REALTIME
                     elif cmd == CMD_SETPOINTS:
                         decode_setpoints(params, self._store)
+                        self._last_setpoint = time.monotonic()
                         self._store.last_packet_cmd = CMD_SETPOINTS
                     else:
                         _LOGGER.debug("Ignoring packet type 0x%02X", cmd)
                         continue
                     self._store.packet_count += 1
                     self._notify(True)
+                    if (
+                        time.monotonic() - self._last_setpoint
+                        > _SETPOINT_REFRESH_INTERVAL
+                    ):
+                        _LOGGER.debug(
+                            "Reconnecting to refresh the setpoint snapshot"
+                        )
+                        self._store.connected = False
+                        self._close_writer()
+                        break
             except asyncio.CancelledError:
                 self._store.connected = False
                 self._notify(False, force=True)

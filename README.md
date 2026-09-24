@@ -155,6 +155,10 @@ adapter --TCP--> Home Assistant (custom_components/heatpump_amitime)
 - The TCP reader runs as an **async task** inside HA (no extra process/thread).
 - Data flows through a `DataUpdateCoordinator`; entities update when packets
   arrive (push‑based, with a light throttle to avoid excessive state writes).
+- The adapter only sends the setpoint (`01B3`) snapshot when a client
+  connects, so the connection re‑establishes periodically (every 5 minutes if
+  no new setpoint packet arrived) to pick up changes made on the unit's panel
+  or in the cloud app.
 - Controls call the cloud API directly via HA's `aiohttp` client.
 
 ## Notes
