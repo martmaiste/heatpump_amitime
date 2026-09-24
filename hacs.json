@@ -1,0 +1,4 @@
+{
+  "name": "AmiTime Heat Pump",
+  "homeassistant": ">=2024.8.0"
+}
